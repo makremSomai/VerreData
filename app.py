@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 
-st.title("📊 Optimized Glass Material Experiments")
+st.title("📊 Optimized Glass (Verre) Material Experiments")
 
 # Load datasets
 df_existing = pd.read_csv("cleaned_verredata.csv")
@@ -24,8 +24,29 @@ st.dataframe(best_generated.to_frame().T)
 st.write("### 📈 All Newly Generated Experiments (Sorted)")
 st.dataframe(df_generated.sort_values(by=["Conductivité thermique", "Résistance Mécanique"], ascending=[True, False]))
 
-# ---- 📊 VISUALIZATIONS ---- #
+# ---- 📥 DOWNLOAD BUTTONS ---- #
+st.write("## 📥 Download Experiment Data")
+col1, col2 = st.columns(2)
 
+# Download button for existing experiments
+with col1:
+    st.download_button(
+        label="📥 Download Existing Experiments",
+        data=df_existing.to_csv(index=False).encode("utf-8"),
+        file_name="existing_verre_experiments.csv",
+        mime="text/csv"
+    )
+
+# Download button for newly generated experiments
+with col2:
+    st.download_button(
+        label="📥 Download Generated Experiments",
+        data=df_generated.to_csv(index=False).encode("utf-8"),
+        file_name="generated_verre_experiments.csv",
+        mime="text/csv"
+    )
+
+# ---- 📊 VISUALIZATIONS ---- #
 st.write("## 🔍 Data Distribution & Analysis")
 
 # 🔹 Histogram: Distribution of Conductivity & Resistance
@@ -63,7 +84,7 @@ st.pyplot(fig)
 st.write("## ✅ Insights & Recommendations")
 st.markdown(
     """
-    - **Low Conductivity & High Resistance Trends**: Compositions with higher **Alumine & Verre** tend to result in **lower conductivity**.
+    - **Low Conductivity & High Resistance Trends**: Higher **Alumine & Verre** tend to result in **lower conductivity**.
     - **Trade-offs**: Increasing certain components (e.g., **Ciment, Argile**) may improve mechanical resistance but could negatively impact thermal conductivity.
     - **Optimization Needed**: Fine-tuning the component ratios can further lower conductivity while maintaining resistance.
     """
